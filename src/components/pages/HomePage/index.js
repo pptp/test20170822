@@ -1,10 +1,25 @@
 // https://github.com/diegohaz/arc/wiki/Atomic-Design
-import React from 'react'
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { CountrySuggest } from 'components';
 
-const HomePage = () => {
-  return (
-    <div>Hello World</div>
-  )
+@connect(state => ({
+  countryData: state.country
+}))
+class HomePage extends Component {
+  render() {
+    const {
+      loading,
+      countryList,
+      errors,
+    } = this.props.countryData;
+
+    return (<div>
+        Hello World
+        <CountrySuggest countryList={countryList}></CountrySuggest>
+      </div>
+    )
+  }
 }
 
 export default HomePage

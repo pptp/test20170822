@@ -1,16 +1,27 @@
-import { init } from 'src/core/countries';
+import {
+  COUNTRIES_UPDATE_PROCESS,
+  COUNTRIES_UPDATE_SUCCESS,
+  COUNTRIES_UPDATE_FAIL,
+} from 'src/actions/consts'
 
-const initialState = init();
+import { countriesUpdateList } from 'src/actions/country.actions'
 
+const initialState = {
+  loading: false,
+  countryList: [],
+  errors: null
+};
 
 export default function country(state = initialState, action) {
-  const callbacks = {
-    //  
-  };
+  switch (action.type) {
+    case COUNTRIES_UPDATE_PROCESS:
+      return { loading: true };
 
-  const callback = callbacks[action.type]
-  if (callback) {
-    return callback.call(this, state, action.payload);
+    case COUNTRIES_UPDATE_SUCCESS:
+      return { loading: false, countryList: action.info }
+
+    case COUNTRIES_UPDATE_FAIL:
+      return { loading: false, countryList: [], errors: action.errors }
   }
 
   return state;
