@@ -2,11 +2,10 @@
   "name": "rebtel-client",
   "version": "0.1.0",
   "scripts": {
-    "start": "node server.js",
+    "start": "npm run clean & npm run dist & node server.js",
     "clean": "rimraf dist/*",
-    "dist": "npm run copy & webpack --env=dist",
-    "copy": "copyfiles -f ./src/index.html ./src/favicon.ico ./dist",
-    "compile": "npm run -- webpack"
+    "dist": "npm run clean & npm run copy & webpack",
+    "copy": "copyfiles -f ./src/index.html ./dist"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

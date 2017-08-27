@@ -52,8 +52,8 @@ module.exports = {
       },
     ]
   },
-  devtool: 'source-map',
-  // devtool: 'eval',
+  // devtool: 'source-map',
+  devtool: 'eval',
   devServer: {
     contentBase: './dist/',
     hot: true,
@@ -85,6 +85,6 @@ module.exports = {
         ],
         context: './src',
       },
-    }),
+    })
   ]
 }
