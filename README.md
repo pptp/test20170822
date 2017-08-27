@@ -18,7 +18,7 @@ Install
 
 1. Confirm you have ```npm``` installed
 
-2. Create and open folder you want to use for tis repo:
+2. Create and open folder you want to use for this repo:
 ```
 mkdir client
 cd ./client
@@ -50,3 +50,5 @@ The ```localhost:8080``` is set as default. If you have not changed anything in 
 ```
 npm start
 ```
+
+after that your browser will open a page with 
