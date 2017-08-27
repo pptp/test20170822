@@ -51,4 +51,4 @@ The ```localhost:8080``` is set as default. If you have not changed anything in 
 npm start
 ```
 
-after that your browser will open a page with 
+after that your browser will open a page with the project
