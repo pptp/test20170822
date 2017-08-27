@@ -3,3 +3,4 @@ dist
 *.log
 *.bak
 node_modules
+src/config.js
