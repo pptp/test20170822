@@ -1,22 +1,17 @@
-// https://github.com/diegohaz/arc/wiki/Atomic-Design
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { CountrySuggest } from 'components';
+import { CountrySuggest, CountryInfo } from 'components';
+import style from './styles.less'
 
-@connect(state => ({
-  countryData: state.country
-}))
 class HomePage extends Component {
   render() {
-    const {
-      loading,
-      countryList,
-      errors,
-    } = this.props.countryData;
-
-    return (<div>
-        Hello World
-        <CountrySuggest countryList={countryList}></CountrySuggest>
+    return (<div className={style.root}>
+        <div className={style.component}>
+          <CountrySuggest />
+        </div>
+        <div className={style.component}>
+          <CountryInfo />
+        </div>
       </div>
     )
   }

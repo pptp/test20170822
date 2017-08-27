@@ -1,33 +1,31 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import styled, { css } from 'styled-components'
-import { font, palette } from 'styled-theme'
-import { ifProp } from 'styled-tools'
 import ReactDOM from 'react-dom'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
-const styles = {
-  input: css`
-    font-family: ${font('primary')};
-    width: 100%;
-    margin: 0;
-  `,
-  popup: css`
-    position: fixed;
-    width: 100%;
-    height: 160px;
-  `
-}
+import style from './styles.less'
+// import { * as loadingIconSrc } from './loader.gif'
+// console.log('loadingIconSrc', loadingIconSrc)
 
-const StyledInput = styled.input`${styles.input}`
-const StyledPopup = styled.div`${styles.popup}`
+const KEY_ESC = 27;
 
+import { countrySelects } from 'src/actions/country.actions'
 
+@connect(
+  state => ({}),
+  dispatch => ({
+    actions: bindActionCreators({countrySelects}, dispatch)
+  })
+)
 class SuggestInput extends Component {
   static propTypes = {
     suggestList: PropTypes.array.isRequired,
     doUpdateSuggest: PropTypes.func,
     initialInput: PropTypes.string,
-    viewComponent: PropTypes.func
+    viewComponent: PropTypes.func,
+    placeholder: PropTypes.string,
+    loading: PropTypes.bool
   };
 
   static defaultProps = {
@@ -53,29 +51,70 @@ class SuggestInput extends Component {
     });
   }
 
+  doSelect = (key) => {
+    const { countrySelects } = this.props.actions;
+    countrySelects(key);
+  }
+
+  doCollapse = () => {
+    this.setState({
+      isOpen: false
+    })
+  }
+
+  onKeyDown = (eventProxy) => {
+    if (eventProxy.which === KEY_ESC) {
+      this.doCollapse();
+    }
+  }
+
   componentWillMount = () => {
     const { initialInput } = this.props;
+    document.addEventListener('click', this.handleClick, false);
     this.setState({
       input: initialInput
     });
   }
 
-  render() {
-    const { suggestList, updateSuggest, initialInput, viewComponent } = this.props;
+  componentWillUnmount = () => {
+    document.removeEventListener('click', this.handleClick, false);
+  }
+
+  handleClick = e => {
+    if(!ReactDOM.findDOMNode(this).contains(e.target)) {
+      this.doCollapse()
+    }
+  }
+
+  render = () => {
+    const {
+      suggestList,
+      updateSuggest,
+      initialInput,
+      viewComponent,
+      placeholder,
+      loading
+    } = this.props;
     const { input, isOpen } = this.state;
-    const { onChange } = this;
+    const { onChange, onKeyDown, doSelect } = this;
 
-    const popupClause = isOpen ? (<StyledPopup>
-      {suggestList.map(suggestItem => viewComponent(suggestItem) )}
-   
-    </StyledPopup>) : '';
+    const itemView = (key, item) => (<div className="popup-item"
+          key={key}
+          onClick={doSelect.bind(this, key)}>
+        {viewComponent(item)}
+      </div>);
 
-    return (<div>
-        <StyledInput
-            ref="input"
+    const popupClause = isOpen ? (<div className={style.popup}>
+      {suggestList.map((suggestItem, key) => itemView(key, suggestItem) )}
+    </div>) : '';
+
+    return (<div className={style.root}>
+        <input className={style.input + (loading ? ' loading' : '')}
+            placeholder={placeholder}
+            onKeyDown={onKeyDown}
             value={input}
-            onChange={onChange}>
-        </StyledInput>
+            ref="input"
+            onChange={onChange} />
         {popupClause}
       </div>);
   }

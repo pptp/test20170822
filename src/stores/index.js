@@ -11,7 +11,6 @@ module.exports = function(initialState) {
   )
 
   if (module.hot) {
-    // Enable Webpack hot module replacement for reducers
     module.hot.accept('src/reduces/index', () => {
       const nextReducer = require('src/reduces/index')
       store.replaceReducer(nextReducer)

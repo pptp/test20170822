@@ -4,6 +4,5 @@ module.exports = {
   },
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": 7
-  }
+    "ecmaVersion": 8
 };
